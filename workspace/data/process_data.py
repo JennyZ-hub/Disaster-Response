@@ -28,8 +28,9 @@ def load_data(messages_filepath, categories_filepath):
 
 
 def clean_data(df):
-"""This function clean DataFrame df."""
-
+"""This function clean DataFrame df to drop duplicated values and NA"""
+    df=df.drop('original',axis=1)
+    df=df.dropna()
     df=df.drop_duplicates('message')
     return df
 
