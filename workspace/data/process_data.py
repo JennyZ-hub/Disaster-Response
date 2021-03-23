@@ -4,6 +4,12 @@ import sqlite3
 from sqlalchemy import create_engine
 
 def load_data(messages_filepath, categories_filepath):
+"""Load messages and categories csv files
+   Description:
+   This function loads disaster_messages and disaster_categories files and merge them on 'id'
+   and save as df. And, create dummy variables for different categories.
+"""
+
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
     df = pd.merge(messages,categories,on='id')
@@ -22,12 +28,16 @@ def load_data(messages_filepath, categories_filepath):
 
 
 def clean_data(df):
+"""This function clean DataFrame df."""
+
     df=df.drop_duplicates('message')
     return df
-    
+
 def save_data(df, database_filename):
+"""This function save df to sql database."""
+
    engine = create_engine('sqlite:///{}'.format(database_filename))
-   df.to_sql('DisasterResponse', engine, index=False) 
+   df.to_sql('DisasterResponse', engine, index=False)
 
 def main():
     if len(sys.argv) == 4:
@@ -40,12 +50,12 @@ def main():
 
         print('Cleaning data...')
         df = clean_data(df)
-        
+
         print('Saving data...\n    DATABASE: {}'.format(database_filepath))
         save_data(df, database_filepath)
-        
+
         print('Cleaned data saved to database!')
-    
+
     else:
         print('Please provide the filepaths of the messages and categories '\
               'datasets as the first and second argument respectively, as '\
