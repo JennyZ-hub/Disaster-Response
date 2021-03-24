@@ -4,11 +4,6 @@ import sqlite3
 from sqlalchemy import create_engine
 
 def load_data(messages_filepath, categories_filepath):
-"""Load messages and categories csv files
-   Description:
-   This function loads disaster_messages and disaster_categories files and merge them on 'id'
-   and save as df. And, create dummy variables for different categories.
-"""
 
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
@@ -28,17 +23,16 @@ def load_data(messages_filepath, categories_filepath):
 
 
 def clean_data(df):
-"""This function clean DataFrame df to drop duplicated values and NA"""
+    """This function clean DataFrame df to drop duplicated values and NA"""
     df=df.drop('original',axis=1)
     df=df.dropna()
     df=df.drop_duplicates('message')
     return df
 
 def save_data(df, database_filename):
-"""This function save df to sql database."""
-
-   engine = create_engine('sqlite:///{}'.format(database_filename))
-   df.to_sql('DisasterResponse', engine, index=False)
+    """This function save df to sql database."""
+    engine = create_engine('sqlite:///{}'.format(database_filename))
+    df.to_sql('DisasterResponse', engine, index=False)
 
 def main():
     if len(sys.argv) == 4:
